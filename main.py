@@ -7,7 +7,7 @@ import asyncio
 import aioble
 import bluetooth
 from machine import Pin
-import machine
+#import machine
 from servo import Servo
 import time
 
