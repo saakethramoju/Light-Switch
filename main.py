@@ -26,7 +26,7 @@ _HEART_RATE_SERVICE = bluetooth.UUID(0x180D)
 # org.bluetooth.characteristic.user_control_point
 _USER_CONTROL_POINT_UUID = bluetooth.UUID(0x2A9F)
 # org.bluetooth.characteristic.gap.appearance.xml
-_ADV_APPEARANCE_HEART_RATE_SENSOR = const(832)
+_ADV_APPEARANCE_HEART_RATE_SENSOR = const(832) # type: ignore
 
 service = aioble.Service(_HEART_RATE_SERVICE)
 servo_control = aioble.Characteristic(service, _USER_CONTROL_POINT_UUID, read = True, write = True, capture = True)
@@ -39,15 +39,6 @@ async def blink():
         await asyncio.sleep(0.5)
         led.off()
         await asyncio.sleep(0.5)
-
-async def scan_devices():
-    '''async with aioble.scan(duration_ms=5000, interval_us=30000, window_us=30000, active=True) as scanner: # type: ignore
-        async for result in scanner:
-            print(result, result.name(), result.rssi, result.services())'''
-    '''async with aioble.scan(duration_ms=5000) as scanner: # type: ignore
-        async for result in scanner:
-            print(result, result.name(), result.rssi, result.services())'''
-
 
 async def control_task(connection):
     global x
@@ -106,7 +97,6 @@ async def peripheral_task():
 
 async def main():
     taskA = asyncio.create_task(peripheral_task())
-    taskB = asyncio.create_task(scan_devices())
-    await asyncio.gather(taskA, taskB)
+    await taskA
 
 asyncio.run(main())
